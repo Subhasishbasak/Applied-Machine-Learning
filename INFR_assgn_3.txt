@@ -1,0 +1,45 @@
+Assignment 3
+MDS201803
+
+Form the data set the "Short description" portion from each news article is extracted using a json parser in python. The extracted data is stored as a list named "articles". Now for each item in articles, the strings are subjected to the following normalization operations:
+
+1. Removing Punctuations
+2. Removing Emojies
+3. Expandig the contracted words (e.g. I'm --> I am)
+4. Case-folding (all converted to lower-case letters)
+
+The resulting list of articles is subjected to duplicate removal and it resulted into 177793 articles. Now the tokens are stored in a dictionary named "tokens" with the tokens as keys and their frequencies as values.
+
+-->
+
+The top 5 frequent tokens are :
+
+('the', 197651), ('to', 112546), ('a', 100396), ('of', 95101), ('and', 94661)
+
+According to Zipf's law the frequency of the i-th most frequent token is proportional to 1/i. In other words if N be the frequency of the most frequent word, the second most frequent word would have frequency N/2 , the third most frequent word would have frequency N/3 and so on. But the frequencies of the top 5 tokens in the given data do not match this criterion. Hence we can say that Zipf's law is not applicable in this dataset.
+
+-->
+
+The top 30 most frequent words are :
+
+['the','to', 'a', 'of', 'and', 'is', 'in', 'that', 'it', 'i', 'for', 'you', 'are', 'not', 'on', 'we', 'with', 'have', 'be', 'this', 'as', 'was', 'but', 'your', 'at', 'from', 'my', 'can', 'an', 'will']
+
+the total frequency of all of these tokens are : 1355142
+the total frequency of all tokens in the data corpus is : 3982063
+
+Thus the top 30 frequent tokens account for (1355142/3982063)*100 = 34.03% of the total tokens. Thus the "Law of 30" is valid in this case.
+
+Moreover, it is to be noticed that the top 30 frequent words in this case  are mostly prepositions which are the commonly used stop-words for e.g. "the", "to", "of", "and" etc. Hence we can use the "Law of 30" to discover the stop words in the documents.
+
+--> 
+
+As a general rule using the top k frequent words as stpwords may not be a good idea. As "k" increases the relevant word are also included which can not be used as stop words. For this data with the total number of distinct tokens 917056, although in the top 30 words there are no such words which seem relevant to a perticular document(by relevant we mean a word which is not considered as a stop word usually, for e.g. proper or commomn nouns, adjectives, verbs etc.). But as "k" increases to 70 , words like "people", "like", "new" are included. When "k" goes to 100 we have words like "trump","love", "years" etc. Hence the choice of stop words can be done using the top k frequent words but the choice of "k" is crucial. A suitably chosen "k" would result in very well collection of stop words, while a large "k" may include revevant words as stop-words.
+
+--> 
+
+The number of stopwords or the choice of "k" can be done on the basis of the reduction of total frequency size, when the top k frequent words are used as stop words. In this case for k = 30 the proportion of reduction was p = 34.03%. One may plot the values of k against p and choose that k after which the change of the value of p less than some threshold. 
+For example if we set a threshold of q% and keep on increasing "k" till that point such that the proportion of reduction of total frequency is more than q%. We stop at a "k_t" corresponding which the proportion of reduction is "p_t" and for the previous point "k_(t-1)" the corresponding proportion is "p_(t-1)" and it satisfies p_(t-1) - p_t < q%. The choice of "q" depends on the choice of document we are dealing with.
+In my case I have plotted a graph of "k" vs "p" which comes out to be an increasing curve with negative 2nd derivative (concave downwards). I choose that "k" for which the of two consecutive "p"'s are less than 0.25% apart. In my case it comes out to be k = 50. Again the choice of the threshold is subjective and depends on the data.
+  
+
+
